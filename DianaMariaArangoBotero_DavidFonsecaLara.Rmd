@@ -1,0 +1,639 @@
+---
+title: "Informe de laboratorio 1"
+author: "Isabela Rivera Aristizábal, Mariana Parra, David Fonseca, Nicolas Betancur"
+date: "2023-08-04"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Bloque 1
+
+Importar el archivo, que va a tener como nombre datos
+
+```{r}
+library(readxl)
+Datos <- read_excel("C:/Users/David Fonseca/Desktop/Info_clientes_banco (1).xlsx")
+View(Datos)
+summary(Datos)
+```
+
+### Problema 4
+
+Clasificación
+
+Id_Cliente: Cualitativa - ordinal Asesor: Cualitativa - nominal
+Sucursal: Cualitativa - nominal Segmento: Cualitativa - ordinal
+Tipo_Cliente: Cualitativa - nominal Cuenta_corriente: cualitativa -
+nominal Saldo_cuenta_corriente: cuantitativa - continua Cuenta_ahorros:
+cuantitativa - discreta Saldo_cuenta_ahorros: cuantitativa - discreta
+Credito_vivienda: cuantitativa - discreta Saldo_credito_vivienda:
+cuantitativa - discreta Veh_1: cuantitativa - discreta Valor_veh_1:
+cuantitativa - discreta Veh_2: cuantitativa - discreta Valor_veh_2:
+cuantitativa - discreta Inmueble_1: cuantitativa - discreta
+Valor_inmuble_1: cuantitativa - discreta Inmueble_2: cuantitativa -
+discreta Valor_inmuble_2: : cuantitativa - discreta
+
+### Problema 5
+
+```{r}
+is.data.frame(Datos)
+(Datos1 <- Datos[,]) #Si solo pongo , sin número me selecciona todas las filas y columnas. ORDEN: filas, columnas
+
+```
+
+#### Tabla de frecuencias con la variable asesor
+
+```{r}
+vec1<-table(Datos1$Asesor)
+vec2<-table(Datos1$Asesor)/length(Datos$Asesor) 
+cbind(vec1,vec2) #Me une ambas variables en una misma tabla
+```
+
+Podemos ver que los asesores con mayor usuarios para servicio al cliente
+son JDALVAREZ y TPEREZ, ya que tienen una mayor frecuencia absoluta.
+Igualmente, a través del valor de la frecuencia relativa podemos ver que
+los datos se están distribuyendo de una manera muy similar
+(aproximadamente 20% cada uno), por lo que se concluye que ningún asesor
+tiene un número de usuarios mucho mayor al resto.
+
+#### Tabla de frecuencias con la variable Sucursal
+
+```{r}
+vec1<-table(Datos1$Sucursal)
+vec2<-table(Datos1$Sucursal)/length(Datos$Sucursal) 
+cbind(vec1,vec2) #Me une ambas variables en una misma tabla
+```
+
+La mayor parte de los clientes están adscritos a la sucursal de PRADO,
+ocupando un 27.3% del total con 546 usuarios. La menor parte están
+adscritos a la sucursal AMERICAS, ocupando un 23.3% del total con 467
+usuarios.
+
+#### Tabla de frecuencias con la variable Segmento
+
+```{r}
+vec1<-table(Datos1$Segmento)
+vec2<-table(Datos1$Segmento)/length(Datos$Segmento) 
+cbind(vec1,vec2) #Me une ambas variables en una misma tabla
+
+#Sacamos la media
+mean(vec1)
+
+```
+
+La mayor fracción de los usuarios hacen parte de la clasificación básica
+ocupando el 29.8% del total, mientras que la menor fracción de los
+usuarios hacen parte de la clasificación media ocupando un 9.4% del
+total. La media de usuarios por clasificación es de 285.42 y son
+ALTO-PLUS y PREMIUM quienes están más cerca de la misma.
+
+#### Tabla de frecuencias con la variable Tipo_Cliente
+
+```{r}
+vec1<-table(Datos1$Tipo_Cliente)
+vec2<-table(Datos1$Tipo_Cliente)/length(Datos$Tipo_Cliente) 
+cbind(vec1,vec2) #Me une ambas variables en una misma tabla
+```
+
+La mayor fracción de los usuarios hacen parte de la categoría rehen,
+ocupando un 38.6% del total, valor que se acerca a la mitad. La menos
+fracción de los usuarios hace parte de la categoría NEGOCIADOR, siendo
+este un valor de un 9.8% del total.
+
+### Problema 6
+
+```{r}
+Datos1$Cuenta_corriente == 1 
+Datos2 <- Datos1[Datos1$Cuenta_corriente == 1,]$Asesor
+dim(Datos2)
+
+Datos2
+```
+
+### Problema 7
+
+```{r}
+vec3<-table(Datos2$Asesor)
+vec4<-table(Datos2$Asesor)/length(Datos2$Asesor) 
+cbind(vec3,vec4)
+Asesores <- c( 'JDALVAREZ' , 'LVELEZ ', 'MGOMEZ', 'NBERRIO', 'TPEREZ')
+```
+
+```{r}
+TablaDatos2 <- data.frame(frecuencias=vec3)#Datos_5 es un data frame
+print(TablaDatos2)
+barplot(vec3)
+```
+
+### Problema 8
+
+#### Cuenta de Ahorros
+
+```{r}
+Datos1$Cuenta_ahorros == 1 
+Datos3 <- Datos1[Datos1$Cuenta_ahorros  == 1,]
+dim(Datos3)
+
+Datos3
+```
+
+```{r}
+vec3<-table(Datos3$Asesor)
+vec4<-table(Datos3$Asesor)/length(Datos3$Asesor) 
+cbind(vec3,vec4)
+
+
+```
+
+```{r}
+TablaDatos2 <- data.frame(frecuencias=vec3)
+print(TablaDatos2)
+barplot(vec3)
+```
+
+#### Credito vivienda
+
+```{r}
+Datos1$Credito_vivienda == 1 
+Datos2 <- Datos1[Datos1$Credito_vivienda  == 1,]
+dim(Datos2)
+
+Datos2
+```
+
+```{r}
+vec3<-table(Datos2$Asesor)
+vec4<-table(Datos2$Asesor)/length(Datos2$Asesor) 
+cbind(vec3,vec4)
+
+```
+
+```{r}
+
+TablaDatos2 <- data.frame(frecuencias=vec3)
+print(TablaDatos2)
+barplot(vec3)
+
+```
+
+### Problema 9
+
+```{r}
+#Datos_saldo <- (Datos$Cuenta_corriente==1)
+datosm <- Datos[Datos$Cuenta_corriente ==1,]
+print(datosm)
+table(datosm$Saldo_cuenta_corriente)
+
+
+
+```
+
+### Problema 10
+
+```{r}
+sum(datosm$Saldo_cuenta_corriente)
+```
+
+### Problema 11
+
+```{r}
+datosn <- Datos[Datos$Cuenta_ahorros == 1,]
+VarTemp1 <- sum(datosm$Saldo_cuenta_corriente)
+VarTemp2 <- sum(datosn$Saldo_cuenta_ahorros)
+VarTemp3 <- VarTemp2-VarTemp1
+VarTemp4 <- VarTemp2 + VarTemp1
+
+print("cuenta corriente: "); print(VarTemp1)
+print("Cuenta ahorros:"); print(VarTemp2)
+print("La diferencia de saldo es de:"); print(VarTemp3)
+print("mas de saldo que la cuenta corriente")
+
+
+```
+
+```{r}
+#Valor porcentual
+
+vec99<-table(VarTemp2/VarTemp4)
+vec98<-table(VarTemp1/VarTemp4)
+mult1 <- (vec99*100)
+mult2 <- (vec98*100)
+
+mult1
+mult2
+
+0.918039708021378 * 100
+0.0819602919786217 * 100
+
+
+
+
+#cbind(vec99,vec98) #Me une ambas variables en una misma tabla
+```
+
+### Problema 12
+
+```{r}
+vec100<-table(Datos$Tipo_Cliente)
+vec101<-table(Datos$Tipo_Cliente)/length(Datos$Tipo_Cliente) 
+cbind(vec100,vec101) #Me une ambas variables en una misma tabla
+
+```
+
+```{r}
+vec103<-table(Datos$Segmento)
+vec104<-table(Datos$Segmento)/length(Datos$Segmento) 
+cbind(vec103,vec104) #Me une ambas variables en una misma tabla
+```
+
+### Problema 13
+
+```{r}
+TablaDatos2 <- data.frame(frecuencias=vec100)
+print(TablaDatos2)
+barplot(vec100)
+```
+
+```{r}
+TablaDatos2 <- data.frame(frecuencias=vec101)
+print(TablaDatos2)
+barplot(vec101)
+```
+
+```{r}
+TablaDatos2 <- data.frame(frecuencias=vec104)
+print(TablaDatos2)
+barplot(vec104)
+```
+
+```{r}
+TablaDatos2 <- data.frame(frecuencias=vec103)
+print(TablaDatos2)
+barplot(vec103)
+```
+
+## Interpretacion de las tablas
+
+#### Interpretacion 1
+
+De acuerdo a las gráficas de barras generadas de los tipos de clientes y
+los segmentos, se puede observar que: El mayor porcentaje de clientes
+son de la categoría REHEN con el 3,86% del total, seguido de los
+clientes INDECISOS con un 3,03%. Además, se observa un comportamiento
+muy similar de la categoría APOSTOL, DECIDICO y NEGOCIADOR.
+
+En conclusión, aunque la mayoría de los clientes se encuentran
+insatisfechos con la atención que reciben por parte del banco, siguen
+adquiriendo sus productos.
+
+#### Interpretacion 2
+
+La mayoría de los clientes del banco se encuentran en el segmento
+básico, optan por por cosas puntuales que suplen sus necesidades
+primarias.
+
+## Bloque 2
+
+### Problema 14
+
+```{r}
+library(readxl)
+Datos <- read_excel("C:/Users/David Fonseca/Desktop/Info_clientes_banco (1).xlsx")
+cant_veh <- Datos$Veh_1 + Datos$Veh_2
+valor_veh <- Datos$Valor_veh_1 + Datos$Valor_veh_2
+Datos_ampliado <- cbind(Datos,cant_veh,valor_veh)
+
+```
+
+### Problema 15
+
+```{r}
+# Datos_ampliado$cant_veh>0 #Condicion de filtro
+Datos4<-Datos_ampliado[Datos_ampliado$cant_veh>0,]
+Datos4$valor_veh #Esto lo que me esta mostrando son las entradas del valor de los vehiculos de los usuarios
+```
+
+###Problema 16
+
+```{r}
+length(Datos4$valor_veh) #Me muestra el numero de clientes que tienen almenos un vehiculo
+```
+
+```{r}
+hist(Datos4$valor_veh,main = "Histograma de Datos frecuencia absoluta",     xlab ="Valor vehiculo",     ylab = "Frecuencia")
+```
+
+```{r}
+hist(Datos4$valor_veh, freq = FALSE , main = "Histograma de Datos Frecuencia relativa",     xlab ="Valor vehiculo",     ylab = "Frecuencia" ) #Me muestra el histograma en frecuencia relativa. Agregar nombre de x, y y el titulo
+```
+
+###Problema 17
+
+```{r}
+Datos_5 <- Datos_ampliado[Datos_ampliado$Cuenta_ahorros == 1 | Datos_ampliado$Cuenta_corriente == 1,] #Datos_5 es un data frame
+Datos_5$ID_cliente
+```
+
+```{r}
+length(Datos_5$ID_cliente) #Me muestra el numero de clientes que tienen cuenta corriente o ahorros
+```
+
+###Problema 18
+
+```{r}
+#Sumar los valores de inm 1 y inm 2 y que sea mayor a 600
+Datos_6 <- Datos_ampliado[Datos_ampliado$Inmueble_1 == 1 & Datos_ampliado$Inmueble_2 == 1,] #Datos_6 es un data frame. No esta listo me falta completar las 
+
+Datos_7 <- Datos_6[(Datos_6$Valor_inmuble_1+Datos_6$Valor_inmuble_2)>600000000 & Datos_6$Credito_vivienda==1,]
+
+data.frame(Datos_7)
+
+```
+
+###Problema 19
+
+```{r}
+print("SUCURSAL - CORRIENTE")
+
+datos_corriente <- Datos[Datos$Cuenta_corriente == 1,]
+unique(Datos$Sucursal)
+
+print("Sucursal AMERICAS")
+Datos2 <- Datos[Datos$Sucursal =="AMERICAS",]
+
+mean2 <- mean(Datos2$Saldo_cuenta_corriente)
+cat("media: "); print(mean2)
+median2 <- median(Datos2$Saldo_cuenta_corriente)
+cat("mediana: "); print(median2)
+range2 <- range(Datos2$Saldo_cuenta_corriente)
+cat("rango: "); print(range2)
+desviacion2 <- sd(Datos2$Saldo_cuenta_corriente)
+cat("desviación: "); print(desviacion2)
+
+print("Sucursal CENTRO")
+Datos3 <- Datos[Datos$Sucursal =="CENTRO",]
+
+mean3 <- mean(Datos3$Saldo_cuenta_corriente)
+cat("media: "); print(mean3)
+median3 <- median(Datos3$Saldo_cuenta_corriente)
+cat("mediana: "); print(median3)
+range3 <- range(Datos3$Saldo_cuenta_corriente)
+cat("rango: "); print(range3)
+desviacion3 <- sd(Datos3$Saldo_cuenta_corriente)
+cat("desviación: "); print(desviacion3)
+
+print("Sucursal PRADO")
+Datos4 <- Datos[Datos$Sucursal =="PRADO",]
+
+mean4 <- mean(Datos4$Saldo_cuenta_corriente)
+cat("media: "); print(mean4)
+median4 <- median(Datos4$Saldo_cuenta_corriente)
+cat("mediana: "); print(median4)
+range4 <- range(Datos4$Saldo_cuenta_corriente)
+cat("rango: "); print(range4)
+desviacion4 <- sd(Datos4$Saldo_cuenta_corriente)
+cat("desviación: "); print(desviacion4)
+
+print("Sucursal VILLA")
+Datos5 <- Datos[Datos$Sucursal =="VILLA",]
+
+mean5 <- mean(Datos5$Saldo_cuenta_corriente)
+cat("media: "); print(mean5)
+median5 <- median(Datos5$Saldo_cuenta_corriente)
+cat("mediana: "); print(median5)
+range5 <- range(Datos5$Saldo_cuenta_corriente)
+cat("rango: "); print(range5)
+desviacion5 <- sd(Datos5$Saldo_cuenta_corriente)
+cat("desviación: "); print(desviacion5)
+
+```
+
+Concluimos que la sucursal con mejor promedio en cuanto a movimientos de cuentas corriente son las AMERICAS con 518121.4 de promedio, mientras que la de peor promedio es la sucursal VILLA con 435084.4, esto puede deberse a que brindan una mejor ateción en la sucursal AMERICAS, atrayendo a más clientes.
+```{r}
+print("SUCURSAL - CREDITO")
+
+datos_credito <- Datos[Datos$Credito_vivienda == 1,]
+unique(Datos$Sucursal)
+
+print("Sucursal AMERICAS")
+Datos2 <- Datos[Datos$Sucursal =="AMERICAS",]
+
+mean2 <- mean(Datos2$Saldo_credito_vivienda)
+cat("media: "); print(mean2)
+median2 <- median(Datos2$Saldo_credito_vivienda)
+cat("mediana: "); print(median2)
+range2 <- range(Datos2$Saldo_credito_vivienda)
+cat("rango: "); print(range2)
+desviacion2 <- sd(Datos2$Saldo_credito_vivienda)
+cat("desviación: "); print(desviacion2)
+
+print("Sucursal CENTRO")
+Datos3 <- Datos[Datos$Sucursal =="CENTRO",]
+
+mean3 <- mean(Datos3$Saldo_credito_vivienda)
+cat("media: "); print(mean3)
+median3 <- median(Datos3$Saldo_credito_vivienda)
+cat("mediana: "); print(median3)
+range3 <- range(Datos3$Saldo_credito_vivienda)
+cat("rango: "); print(range3)
+desviacion3 <- sd(Datos3$Saldo_credito_vivienda)
+cat("desviación: "); print(desviacion3)
+
+print("Sucursal PRADO")
+Datos4 <- Datos[Datos$Sucursal =="PRADO",]
+
+mean4 <- mean(Datos4$Saldo_credito_vivienda)
+cat("media: "); print(mean4)
+median4 <- median(Datos4$Saldo_credito_vivienda)
+cat("mediana: "); print(median4)
+range4 <- range(Datos4$Saldo_credito_vivienda)
+cat("rango: "); print(range4)
+desviacion4 <- sd(Datos4$Saldo_credito_vivienda)
+cat("desviación: "); print(desviacion4)
+
+print("Sucursal CENTRO")
+Datos5 <- Datos[Datos$Sucursal =="VILLA",]
+
+mean5 <- mean(Datos5$Saldo_credito_vivienda)
+cat("media: "); print(mean5)
+median5 <- median(Datos5$Saldo_credito_vivienda)
+cat("mediana: "); print(median5)
+range5 <- range(Datos5$Saldo_credito_vivienda)
+cat("rango: "); print(range5)
+desviacion5 <- sd(Datos5$Saldo_credito_vivienda)
+cat("desviación: "); print(desviacion5)
+```
+
+Concluimos que la sucursal con mejor promedio en cuanto a movimientos de créditos de vivienda son las AMERICAS con 135776486 de promedio, mientras que la de peor promedio es la sucursal PRADO con 125230296. Este comportamiento puede deberse a que en la sucursal AMERICAS haya una menor tasa de interes para los clientes, lo cuál aumenta la obtención de un crédito por grandes sumas de dinero.
+
+```{r}
+print("ASESOR - CORRIENTE")
+
+unique(datos_corriente$Asesor)
+
+datos_asesores <- datos_corriente[datos_corriente$Asesor=="MGOMEZ",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero MGOMEZ: "); print(resultado)
+
+datos_asesores <- datos_corriente[datos_corriente$Asesor=="JDALVAREZ",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero JDALVAREZ: "); print(resultado)
+
+datos_asesores <- datos_corriente[datos_corriente$Asesor=="NBERRIO",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero NBERRIO: "); print(resultado)
+
+datos_asesores <- datos_corriente[datos_corriente$Asesor=="TPEREZ",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero TPEREZ: "); print(resultado)
+
+datos_asesores <- datos_corriente[datos_corriente$Asesor=="LVELEZ",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero LVELEZ: "); print(resultado)
+```
+
+Considerando el volumen de dinero gestionado, el asesor con un desempeño más destacado en términos de saldos de cuentas corriente es "MGOMEZ" y el peor es "NBERRIO". Esto puede suceder porque el asesor MGOMEZ ofrezca un mejor servicio a los clientes, reteniendolos en el banco e incentivandolos a guardar su dinero allí. Otra razón puede ser que MGOMEZ se encuentre en la sucursal más grande donde se reciben más clientes, en cambio NBERRIO puede trabajar en una sucursal más pequeña donde no hay tanta posibilidad de clientes con grandes sumas de dinero
+
+```{r}
+print("ASESOR - CREDITO")
+
+unique(datos_credito$Asesor)
+
+datos_asesores <- datos_credito[datos_credito$Asesor=="MGOMEZ",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero MGOMEZ: "); print(resultado)
+
+datos_asesores <- datos_credito[datos_credito$Asesor=="JDALVAREZ",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero JDALVAREZ: "); print(resultado)
+
+datos_asesores <- datos_credito[datos_credito$Asesor=="NBERRIO",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero NBERRIO: "); print(resultado)
+
+datos_asesores <- datos_credito[datos_credito$Asesor=="TPEREZ",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero TPEREZ: "); print(resultado)
+
+datos_asesores <- datos_credito[datos_credito$Asesor=="LVELEZ",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_asesores)/length(datos_asesores))
+cat("Dinero LVELEZ: "); print(resultado)
+```
+
+Considerando el volumen de dinero gestionado, el asesor con un desempeño más destacado en términos de saldos de cuentas de crédito es "NBERRIO" y el peor es "MGOMEZ". Comparando esta información con la anterior (salo cuentas corriente), el comportamiento de los asesores respecto al dinero total en créditos de vivienda es inverso al que tuvieron los mismos asesores NBERRIO y MGOMEZ con cuentas corriente, esto puede pasar porque los clientes de MGOMEZ tienen mayores sumas de dinero y no requieren de altos créditos para pagar una vivienda, mientras los clientes de NBERRIO necesitan más prestamos del banco.
+
+```{r}
+print("SUCURSAL2 - CREDITO")
+
+unique(datos_credito$Sucursal)
+
+datos_sucursales <- datos_credito[datos_credito$Sucursal=="AMERICAS",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero AMERICAS: "); print(resultado)
+
+datos_sucursales <- datos_credito[datos_credito$Sucursal=="VILLA",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero VILLA: "); print(resultado)
+
+datos_sucursales <- datos_credito[datos_credito$Sucursal=="CENTRO",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero CENTRO: "); print(resultado)
+
+datos_sucursales <- datos_credito[datos_credito$Sucursal=="PRADO",]$Saldo_credito_vivienda
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero PRADO: "); print(resultado)
+```
+```{r}
+print("SUCURSAL2 - CORRIENTE")
+
+unique(datos_corriente$Sucursal)
+
+datos_sucursales <- datos_corriente[datos_corriente$Sucursal=="AMERICAS",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero AMERICAS: "); print(resultado)
+
+datos_sucursales <- datos_corriente[datos_corriente$Sucursal=="VILLA",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero VILLA: "); print(resultado)
+
+datos_sucursales <- datos_corriente[datos_corriente$Sucursal=="CENTRO",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero CENTRO: "); print(resultado)
+
+datos_sucursales <- datos_corriente[datos_corriente$Sucursal=="PRADO",]$Saldo_cuenta_corriente
+
+resultado <- (sum(datos_sucursales)/length(datos_sucursales))
+cat("Dinero PRADO: "); print(resultado)
+```
+Considerando el volumen de dinero gestionado, la sucursal con un desempeño más destacado en términos de saldos de crédito  vivienda es "VILLA" y la peor es "PRADO". Esto puede deberse a la ubicación de las sucursales, puede que más personas tengan acceso a VILLA y por eso deciden optener un crédito de vivienda allá. Además, observando los saldos de cuentas corriente la sucursal con un desempeño más destacado es "AMERICAS" y la peor es "VILLA"; esto nos permite inferir que las personas de VILLA cuentan con menor cantidad de dinero ahorrado y por eso son las que mayores prestamos necesitan para adquirir una vivienda.
+
+```{r}
+boxplot(
+  datos_corriente$Saldo_cuenta_corriente ~ datos_corriente$Tipo_Cliente, xlab = "Tipo Cliente", ylab = "Saldo Cuenta Corriente", col = c("yellow", "green", "blue", "pink", "red")
+)
+```
+Conclusión general:
+En esta gráfica, observamos que las medianas en todos los grupos de
+clientes están muy cercanas entre sí. Esto indica que los saldos son
+bastante parecidos entre los distintos tipos de clientes. Por esto es
+dificil concluir algo respecto a como el banco segmenta a los clientes
+ademas de que tampoco conocemos los criterios que usa para esto en
+cuanto a las cuentas corriente se refiere, y el tener rangos tan
+similares tampoco ayuda, se esperaría que los rangos no coincidieran
+tanto.
+
+Otras conclusiones:
+Podemos ver que el  usuario "APOSTOL" posee un saldo medio a comparación de todos los otros, por lo que es considerado un usuario con un saldo promedio. A diferencia de éste, el usuario "DECIDIDO" es el que posee el mayor número de saldo en la cuenta corriente, lo cual nos permite concluir que esta a un paso mas largo.
+El usuario indeciso, a comparación del resto, mantiene su saldo constante, más no es el más alto, por lo que se puede ver que es un comportamiento más complicado e inseguro con respecto al gasto de dinero, y por esto es que hay menos gasto, a diferencia del usuario "NEGOCIADOR", el cual tiene mucho menos saldo, y se deduce que se ha invertido y que es un usuario que regularmente esta comprando
+
+```{r}
+boxplot(
+  datos_credito$Saldo_credito_vivienda ~ datos_credito$Tipo_Cliente, xlab = "Tipo Cliente", ylab = "Saldo Crédito Vivienda",col = c("yellow", "green", "blue", "pink", "red")
+)
+
+```
+
+En esta gráfica, observamos que las medianas en todos los grupos de
+clientes están muy cercanas entre sí. Esto indica que los saldos son
+bastante parecidos entre los distintos tipos de clientes. Por esto es
+dificil concluir algo respecto a como el banco segmenta a los clientes
+ademas de que tampoco conocemos los criterios que usa para esto en
+cuanto a los creditos de vivienda se refiera, y el tener rangos tan
+similares tampoco ayuda, se esperaría que los rangos no coincidieran
+tanto.
+
+En cuanto a la similitud de las medianas y los rangos es bastante
+parecida esta grafica a la grafica de cuenta corriente
+
+```{r}
+plot(density(Info_clientes_banco[(Info_clientes_banco$Cuenta_ahorros==1 & Info_clientes_banco$Sucursal=="VILLA"),]$Saldo_cuenta_ahorros),main="Saldo cuentas de ahorros por tipo de cliente",xlab="Saldo", ylab="Densidad", col="purple")
+lines(density(Info_clientes_banco[(Info_clientes_banco$Cuenta_ahorros==1 & Info_clientes_banco$Tipo_Cliente=="DECIDIDO"),]$Saldo_cuenta_ahorros),col="red")
+lines(density(Info_clientes_banco[(Info_clientes_banco$Cuenta_ahorros==1 & Info_clientes_banco$Tipo_Cliente=="REHEN"),]$Saldo_cuenta_ahorros),col="blue")
+lines(density(Info_clientes_banco[(Info_clientes_banco$Cuenta_ahorros==1 & Info_clientes_banco$Tipo_Cliente=="APOSTOL"),]$Saldo_cuenta_ahorros),col="green")
+lines(density(Info_clientes_banco[(Info_clientes_banco$Cuenta_ahorros==1 &
+Info_clientes_banco$Tipo_Cliente=="NEGOCIADOR"),]$Saldo_cuenta_ahorros),col="Pink")
+lines(density(Info_clientes_banco[(Info_clientes_banco$Cuenta_ahorros==1 &
+Info_clientes_banco$Tipo_Cliente=="INDECISO"),]$Saldo_cuenta_ahorros),col="Yellow")
+```
+
+Viendo el gráfico de densidades es complicado concluir los criterios que toma el banco para escoger los tipos de clientes, sin embargo podemos observar lo siguiente en el diagrama de densidades: 
+Se observa que la distribución de saldo de las cuentas de ahorros de todos los tipos de cliente se concentra entre 0 y 200000000; también, se observa que la mayor cantidad de clientes tipo DECIDIDO tienen un saldo entre 100000000 y 150000000. Por otro lado es evidente que los clientes "INDECISO" tienen una forma más estable, por lo que se podría concluir que no hay muchos cambios con respecto al saldo. Por otro lado, la categoría de "NEGOCIADOR" mantiene unas curvas muy pronunciadas y ascendentes, al igual que el "DECIDIDO", por lo que se les categoriza de esta forma.

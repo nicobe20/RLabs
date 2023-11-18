@@ -1,0 +1,492 @@
+---
+title: "Laboratorio 2"
+author: "Isabela Rivera Aristizábal, Mariana Parra, David Fonseca, Nicolas Betancur"
+output:
+  html_document:
+    df_print: paged
+---
+# Laboratorio 2
+
+
+## Bloque 1
+
+### Ejercicio 1
+Lanzar una moneda
+S = {"sello" , "cara",}
+#### A.
+```{r}
+lanzar_una_moneda <- function (p,numero_derep) {
+  #instrucciones
+  runif(1)
+res = ifelse(runif(numero_derep) <= p, "sello", "cara")
+  return(res)
+}
+
+
+
+#Que lado de la moneda esta cargado?
+
+
+
+
+lanzar_una_moneda(numero_derep=1234,0.7) #Moneda cargada
+#lanzar_una_moneda(0.5) #Moneda no cargada
+
+#a
+resultadosC <- (lanzar_una_moneda(numero_derep=1234, 0.5))
+#resultadosN
+table(resultadosC)
+
+
+
+
+
+```
+Si la moneda esta cargada
+```{r}
+sample(c("sello","cara"), 1 ,    prob = c(0.7, 1-0.7))
+```
+#### B.
+```{r}
+lanzar_una_moneda(numero_derep=1234,0.5)
+#Numero_derep hace que se repita 1234 veces la funcion
+```
+Explicacion
+```{r}
+for (i in 1:10) {
+  print(i)
+}
+#un ciclo que se impre 10 veces actualizando 
+```
+
+
+#### C.
+```{r}
+resultadosC <- (lanzar_una_moneda(numero_derep=1234, 0.27))
+#resultadosN
+table(resultadosC)
+```
+
+### Ejercicio 2 - teorico
+#### A.
+P(X=1)=1/6
+P(X=2)=1/6
+P(X=3)=1/6
+P(X=4)=1/6
+P(X=5)=1/6
+P(X=6)=1/6
+
+P{2,4,6}=P(2)+P(4)+P(6)=1/6+1/6+1/6=3/6=1/2
+
+P{1,6}=P(1)+P(6)=1/6+1/6=2/6=1/3
+
+#### B.
+```{r}
+lanzar_dado <- function () {
+  #instrucciones
+  runif(1)
+res_dado = (sample(c(1:6),1)) #no le coloco prob=(1/6,1/6,1/6...), sin nada me asume que la probabilidad es igual para todos
+  return(res_dado)
+}
+lanzar_dado() #Aqui lo llamo la función para que me aparezca el resultado
+
+
+
+
+
+vec = 0
+for (ite in 1:1000) {
+  Dado1 <- lanzar_dado()
+  vec[ite] = Dado1
+}
+table(vec)
+```
+Estos son los resultados que obtuvimos al lanzar el dado:
+
+1   2   3   4   5   6 
+138 170 165 181 185 161 
+
+
+Comprobando que la probabilidad de tener un número cualquiera es de 1/6 
+P(3) = 16.5 = 16.5%
+
+El resultado se acerca mucho 16.6% o 1/6
+
+
+Comprobando que la probabilidad de tener 2,4,6 es de 1/2 
+P(2 v 4 v 6) = 17 + 18.1 + 16.1 = 51.2%
+
+El resultado se acerca mucho 50% o 1/2
+
+
+Comprobando que la probabilidad de tener 1 y 6 es de 1/3 
+P(1 v 6) = 13.8 + 16.1 = 29.9%
+
+El resultado se acerca mucho 33.3% o 1/3
+
+
+
+#### C. Lanzar 2 dados y registrar la suma del resultado
+S={2,3,4,5,6,7,8,9,10,11,12}
+```{r}
+lanzar_dado1 <- function () {
+  #instrucciones
+  runif(1)
+res_dado1 =  sample(c(1:6),1) #no le coloco prob=(1/6,1/6,1/6...), sin nada me asume que la probabilidad es igual para todos
+  return(res_dado1)
+
+
+}
+lanzar_dado2 <- function () {
+  #instrucciones
+  runif(1)
+res_dado2 = sample(c(1:6),1) #no le coloco prob=(1/6,1/6,1/6...), sin nada me asume que la probabilidad es igual para todos
+  return(res_dado2)
+
+
+}
+
+
+#Iterador numerico.
+
+#vec = 0
+#for (ite in 1:1000) {
+  #lan1 <- lanzar_dado1()
+  #lan2 <- lanzar_dado2()
+  #vec[ite] = lan1 + lan2
+  
+#}
+
+#Otra forma de iterar 1000 veces de manera mas corta.
+
+Result1<- replicate(1000, lanzar_dado1() + lanzar_dado2())
+
+table(Result1)
+
+
+
+
+
+
+
+
+
+
+```
+#### D. Dado cargado con P de impares siendo el doble de los pares
+
+```{r}
+
+lanzar_dado_cargado <-function  (p=c(2/9,1/9,2/9,1/9,2/9,1/9)) {
+vec2 <- sample(1:6,1,prob = p)
+return(vec2)
+}
+resul_dado_cargado <- replicate (39000, lanzar_dado_cargado())
+table(resul_dado_cargado)
+
+```
+
+
+### Ejercicio 3
+
+Arbol de Probabilidad 
+
+              - 5% ID
+            -
+          - 
+        -
+90%B  -   -
+    -       -
+  -             - 95% NI
+-
+  -
+    -           - 80%ID
+      -       -
+  10%D  -   -
+          -
+            -
+              -
+                - 20%NI
+          
+
+
+
+#### A.
+Probabilidad de que sea identificado como defectuoso dado que es defectuoso.
+```{r}
+ID <- 0.1
+D <- 0.8
+
+resul <- ID*D
+resul
+
+```
+
+#### B.
+```{r}
+dispositivo <- function(numero_derep, D){
+   runif(1)
+res = ifelse(runif(numero_derep) <= D, "Defectuoso", "No Defectuoso")
+  return(res)
+  
+  }
+result2<-dispositivo(numero_derep=1000,0.1)
+result2
+
+table(result2)
+
+```
+
+
+### C.
+```{r}
+testCalidad = 0
+result2 == "Defectuoso"
+testCalidad[result2=="Defectuoso"] = sample(c("ID","NI"),sum(result2=="Defectuoso"),replace = TRUE, prob= c(0.8,0.2))
+table(testCalidad)
+
+#testCalidad  
+result2 == "No Defectuoso"
+testCalidad[result2=="No Defectuoso"] = sample(c("ID","NI"),sum(result2=="No Defectuoso"),replace = TRUE, prob= c(0.95,0.05))
+table(testCalidad)
+tabla= table(result2,testCalidad)
+prop.table(tabla)
+prop.table(tabla,1)
+prop.table(tabla,2)
+```
+### Ejercicio 4
+
+### A
+```{r}
+prob <- dbinom(3,size=10,prob=0.30)
+prob
+
+
+
+```
+
+### B
+```{r}
+prob2 <- dbinom(7,size=10,prob=0.30)
+prob2
+```
+
+###C
+```{r}
+n <- 10
+k <- 3
+p <- 0.3
+
+
+# Simulación de 500 experimentos
+num_simulaciones <- 500
+resultados <- rbinom(num_simulaciones, n, p)
+
+# Calcular la tabla de frecuencias relativas
+tabla_frecuencias <- table(resultados) / num_simulaciones
+
+# Crear un gráfico de barras
+barplot(tabla_frecuencias, main="Simulacion 500 veces", xlab="Número de Éxitos", ylab="Frecuencia Relativa")
+
+```
+```{r}
+n <- 10
+k <- 7
+p <- 0.3
+
+
+# Simulación de 500 experimentos
+num_simulaciones <- 500
+resultados <- rbinom(num_simulaciones, n, p)
+
+# Calcular la tabla de frecuencias relativas
+tabla_frecuencias <- table(resultados) / num_simulaciones
+
+# Crear un gráfico de barras
+barplot(tabla_frecuencias, main="Simulacion 500 veces", xlab="Número de Éxitos", ylab="Frecuencia Relativa")
+```
+
+### Ejercicio 5
+
+### A
+```{r}
+#Simular 1000 veces el número de tormentas eléctricas que ocurren en una semana
+
+Result <- rpois(1000, lambda = 2) # Dos tormentas electricas en una semana y simulamos 1000 veces
+Result
+
+table(Result)
+
+```
+### B
+```{r}
+#Calcular la probabilidad de que exactamente 3 tormentas eléctricas ocurran en una semana.
+
+lambda <- 2  # Tasa promedio de ocurrencia
+k <- 3       # Número de tormentas eléctricas deseadas
+
+prob <- dpois(k, lambda)
+prob
+
+```
+### C
+
+```{r}
+#Calcular la probabilidad de que más de 4 tormentas eléctricas ocurran en una semana
+
+
+prob_hasta_4 <- sum(dpois(0:4, lambda=2)) 
+
+#Calculamos la probabilidad de más de 4 tormentas.
+prob_mas_de_4 <- 1 - prob_hasta_4
+
+prob_mas_de_4
+
+```
+
+### Ejercicio 6
+### A
+
+```{r}
+lanzar_cinco_dados <- function() {
+  lanzamientos <- sample(1:6, 5, replace = TRUE)  # Lanzar 5 dados
+  media <- mean(lanzamientos)  # Calcular la media de los resultados
+  return(media)
+}
+
+# Simular el experimento 5000 veces y guardar las medias
+medias <- replicate(5000, lanzar_cinco_dados())
+table(medias)
+ hist(medias)
+media_de_medias=mean(medias)
+media_de_medias
+varianza=var(medias)
+varianza
+desviacion=sd(medias)
+desviacion
+abline(v=media_de_medias,col="red")
+abline(v=media_de_medias+desviacion,col="yellow")
+abline(v=media_de_medias-desviacion,col="blue")
+```
+
+
+
+### Ejercicio 7
+
+
+### A
+```{r}
+#Generar 1000 lanzamientos simulados de dardos y almacenar las posiciones de aterrizaje en un vector.
+
+# Generar 1000 lanzamientos simulados de dardos
+n_lanzamientos <- 1000
+posiciones_aterrizaje <- runif(n_lanzamientos, min = 0, max = 1)
+
+# Ver las primeras 10 posiciones de aterrizaje
+head(posiciones_aterrizaje)
+
+
+
+
+
+```
+### B
+```{r}
+# Generar 1000 lanzamientos simulados de dardos
+posiciones <- runif(1000, min = 0, max = 1) # genero los 1000 lanzamientos de dardos igual al punto anterio
+intervalo <- c(0.2, 0.4) #intervalos en forma de vector que vamos a usar.
+resultInt <- sum(posiciones >= intervalo[1] & posiciones <= intervalo[2]) #filtramos para que solo sean los que caen en el intervalo(0.2, 0.4)
+resultInt
+resultInt / 1000
+
+```
+
+### C
+```{r}
+# Generar 1000 lanzamientos simulados de dardos
+posiciones <- runif(1000, min = 0, max = 1) # genero los 1000 lanzamientos de dardos igual al punto anterio
+intervalo <- c(0.8, 1) #intervalos en forma de vector que vamos a usar.
+resultInt <- sum(posiciones >= intervalo[1] & posiciones <= intervalo[2]) #filtramos para que solo sean los que caen en el intervalo(0.2, 0.4)
+resultInt
+resultInt / 1000
+
+
+```
+
+
+### Ejercicio 8
+### A
+```{r}
+
+#Haciendolo como visto en el taller
+
+Z <- 1-pnorm(25,30,5,lower.tail=TRUE) #esto me encuentra la integral desde 25 hasta infinito
+
+
+```
+
+
+```{r}
+#Haciendolo con la formula de la clase magistral
+
+Z <- (25 - 30) / 5 #Calculamos el valor Z usando la formula Z =x-µ/σ
+
+1-pnorm(Z)
+
+
+```
+### B
+```{r}
+Z <- qnorm(1 - 0.1)# Cuantil Z correspondiente al nivel de probabilidad
+tiempo <- Z * 5 + 30 #Despejar el tiempo de la fórmula Z = x-µ/σ
+tiempo 
+```
+### C
+```{r}
+probabilidad <- pnorm(32,30,5) - pnorm(28,30,5)#Función de densidad de probabilidad
+probabilidad
+
+```
+
+
+
+### Ejercicio 9
+
+```{r}
+
+# Crear un rango de valores de tiempo
+x <- seq(-5, 5, by = 0.01)
+
+fx1<-dnorm(x,sd=1)
+fx2<-dnorm(x,sd=2)
+fx3<-dnorm(x,sd=3)
+fx4<-dnorm(x,sd=4)
+fx5<-dnorm(x,sd=5)
+
+# Graficar las PDFs para diferentes desviaciones estándar en una sola gráfica
+plot(x, fx1, type = 'l', col = 'blue',
+xlab = 'Tiempo', ylab = ' funcion de densidad de probabilidad normal', main = ' funcion de densidad de probabilidad normal para Distintas Desviaciones Estandar')
+lines(x, fx2, col = 'red')
+lines(x, fx3, col = 'green')
+lines(x, fx4, col = 'purple')
+lines(x, fx5, col = 'orange')
+
+```
+ 
+ CONCLUSIÓN
+ 
+La desviación estándar representa qué tan acercados están los valores de la media, por lo que el valor de la distribución de probabilidad normal se amplía si este valor incrementa. 
+Cuando se le da un valor de 1, llega a un valor más alto de densidad en un tiempo más reducido. Caso contrario cuando la desviación es 5 se obtiene el menor valor de función de densidad en un tiempo más prolongado.
+ 
+
+### Ejercicio 10
+
+```{r}
+Tasa_falla <- 0.05
+tiempo <- 15
+
+
+probabilidad <- exp(-Tasa_falla * tiempo)#Calculamos la probabilidad con la formula S(t)=e^(−λt) (distribución de probabilidad exponencial)
+probabilidad
+```
+

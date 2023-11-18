@@ -1,0 +1,426 @@
+---
+title: "Laboratorio 3"
+output: html_notebook
+author: IsabelaRiveraAristizabal_NicolasBetancurOchoa_MarianaParraDiaz_DavidFonsecaLara
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Bloque 1
+### Punto 1
+
+
+Realice un an ́alisis descriptivo de la distribu ́on de las variables calculando algunas estadíısticas de resumen y haciendo el histograma.
+
+(ventacasas tiene 8,584,900 entradas)
+
+
+```{r}
+library(readxl)
+datos1 <- read.csv("C:/Users/Mariana/Downloads/ventacasas.csv", header = TRUE, stringsAsFactors = FALSE)
+is.data.frame(datos1)
+sample(datos1,2,replace= TRUE, prob = NULL)
+#corran esto solo una vez porque es demorado jajajajaj
+
+```
+
+
+
+### A
+
+
+
+
+```{r}
+#Distribucion de los datos
+datos2 <- (datos1$Area)
+#table(datos2)
+datos3 <- (datos1$Precio)
+#table(datos3)
+mean(datos2)
+mean(datos3)
+
+des1 <- sd(datos2)
+des2 <- sd(datos3)
+Ami <- min(datos2)
+Ama <- max(datos2)
+Pmi <- min(datos3)
+Pma <- max(datos3)
+k = 15
+
+A <- (Ama - Ami)/k
+
+P <- (Pma -Pmi)/k
+
+hist(datos2,breaks = seq(Ami,Ama,by = A))
+hist(datos3,breaks = seq(Pmi,Pma, by = P))
+
+datosnorm1<- dnorm(datos2,mean=datos2,des1)
+datosnorm2<- dnorm(datos3,mean=datos3,des2)
+table(datosnorm1)
+table(datosnorm2)
+
+```
+Se trata de una distribución continua ya que los valores que puede tomar la variable aleatoria  (precio y área) puede ser cualquiera. Además se puede calcular la probabilidad de que el precio o el área tengan un valor menor o igual a cierto número y se puede calcular la media y la desviación estándar.
+Igualmente, al trazar imaginariamente el polígono de frecuencias, podemos ver una forma de campana.
+
+### B
+
+Para el atributo  ́area, tome muestras de tama ̃no n = 10, n = 50, n = 100, n = 1500 y n = 2000
+cada una , calcule la media para cada muestra, realice el histograma y compare con el valor de la
+media poblacional obtenido en el  ́ıtem anterior. ¿ Cu ́al de las muestras proporciona una estimaci ́on
+m ́as precisa de la media poblacional?
+
+```{r}
+
+n1 <- sample(datos2,10,replace=TRUE)
+mean(n1)
+n2 <- sample(datos2,50,replace=TRUE)
+mean(n2)
+n3 <- sample(datos2,100,replace=TRUE)
+mean(n3)
+n4 <- sample(datos2,1500,replace=TRUE)
+mean(n4)
+n5 <- sample(datos2,2000,replace=TRUE)
+mean(n5)
+
+hist(n1)
+hist(n2)
+hist(n3)
+hist(n4)
+hist(n5)
+```
+
+Analisis:
+
+De las medias obtenidas de cada una de las muestras podemos observar que a medida que se usan mas datos la precisión de la media es mas cercana a la obtenida en el punto anterior. Las muestras de 1500 y 2000 datos son las mas precisas. 
+
+
+
+### C
+
+Generar 5000 muestras de tama ̃no n = 10, n = 50 y n = 100 de la poblaci ́on ( ́area), calcular la media
+de cada muestra y almacenar cada resultado en un vector. Luego trazar los histogramas. ¿Qu ́e sucede
+con la distribuci ́on del muestreo? Concluir.
+
+```{r}
+
+vec1 <- replicate(1000,mean(sample(datos2,10,TRUE)))
+vec1
+hist(vec1)
+
+vec2 <- replicate(1000,mean(sample(datos2,50,TRUE)))
+vec2
+hist(vec2)
+
+
+vec3 <- replicate(1000,mean(sample(datos2,100,TRUE)))
+vec3
+hist(vec3)
+
+
+
+
+```
+Al observar el histograma de frecuencias podemos ver que la distribución del muestreo pasa a ser una distribución normal ya que toma la forma de la campana de gauss. Podemos ver que la variable aleatoria continua puede tomar valores inferiores y superiores a la media con la misma posibilidad (50%) ya que esta se encuentra centrada. 
+Igualmente, podemos observar que entre mayor es el tamaño de las muestras, se pueden agrupar más los datos y hay mucha más presición por lo que da más información concreta. Esto lo podemos deducir a través de los valores de los ejes, ya que entre cada valor, hay más barras mientras aumenta el tamaño de muestra (eje x).
+
+### Punto 2
+### A
+```{r}
+
+
+n1 <- sample(datos3,10,replace=TRUE)
+mean(n1)
+n2 <- sample(datos3,50,replace=TRUE)
+mean(n2)
+n3 <- sample(datos3,100,replace=TRUE)
+mean(n3)
+n4 <- sample(datos3,1500,replace=TRUE)
+mean(n4)
+n5 <- sample(datos3,2000,replace=TRUE)
+mean(n5)
+
+hist(n1)
+hist(n2)
+hist(n3)
+hist(n4)
+hist(n5)
+```
+
+```{r}
+
+vec1 <- replicate(1000,mean(sample(datos3,10,TRUE)))
+vec1
+hist(vec1)
+
+vec2 <- replicate(1000,mean(sample(datos3,50,TRUE)))
+vec2
+hist(vec2)
+
+
+vec3 <- replicate(1000,mean(sample(datos3,100,TRUE)))
+vec3
+hist(vec3)
+
+```
+###B
+Simule 50,000 muestras aleatorias para  ̄Xprecio ∼ N (μ = mean(precio), σ = sd(precio)) tomando
+muestras de tamãno n = 100.
+• Calcule el promedio de cada una las 50,000 muestras aleatorias.
+• Construya el histograma de los 50,000 promedios muestrales. ¿Qúe se puede concluir?
+• Realizar la gr ́afica de la distribuci ́on acumulada de los promedios y trazar una recta vertical por
+el promedio de la variable precio.
+
+
+```{r}
+n_simulations <- 1000
+sample_size <- 100
+
+Promedios_muestras <- rep(0, n_simulations)
+
+for (i in 1:n_simulations) {
+  samples <- rnorm(sample_size, mean(datos3), sd(datos3))
+  Promedios_muestras[i] <- mean(samples)
+}
+
+hist(Promedios_muestras, main = "Distribución de Promedios Muestrales (Precio)", xlab = "Promedio de Muestra")
+
+mean_price <- mean(datos3)
+
+hist(Promedios_muestras, breaks = 15, freq = FALSE, main = "Distribución Acumulada de Promedios Muestrales", 
+     xlab = "Promedio de Muestra")
+abline(v = mean_price, col = "red")
+
+```
+Podemos concluir que, a través de la suma de los promedios muestrales se puede generar una distribución normal y se puede encontrar el promedio poblacional, comprobando el teorema central del limite.
+
+#Problema 3
+Demuestre gŕaficamente (teorema central del l ́ımite) que v.a. discretas con distribui ́on bino-
+mial y poisson respectivamente, con paŕametros n, p = 0,5 y λ = 0,5, se pueden aproximar mediante una
+distribucíon normal con μ = 0,5. Tome valores para n de 10, 50, 100, 200, 500, 1000, 2000, 3000, 4000, 5000,
+6000, 7000, 8000, 9000 y 10000. Realice interpretaciones.
+```{r}
+
+n <- c(10,  50, 100, 200, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) # parametros del ejercicio.
+Funcion1 <- function(n) {
+  media1 <- mean(rbinom(n,1,0.5))
+  return(media1)
+}
+
+lista1 <- lapply(n, Funcion1)
+
+Funcion2 <- function(n) {
+  media2 <- mean(rpois(n,0.5))
+  return(media2)
+}
+
+lista2 <- lapply(n, Funcion2)
+
+Funcion3 <- function(n) {
+  media3 <- mean(rnorm(n,0.5))
+  return(media3)
+}
+
+lista3 <- lapply(n, Funcion3)
+
+plot(n, unlist(lista1),type= 'l')
+     lines(n, unlist(lista2),type= 'l', col='red')
+     lines(n, unlist(lista3), type= 'l',col='green')
+    
+```
+Podemos observar que a medida que aumenta el valor de la muestra n, se aproximan más los valores de las distribuciones, llegando finalmente a estabilizarse en valores cercanos a 0,5.
+
+
+
+#Problema 4
+Problema 4. Simule 500000 valores de X ∼ P(λ = 20) y calcule el promedio y la varianza. Seleccione una
+muestra aleatoria de n = 1000 y determine el promedio de esa muestra y la desviaci ́on est ́andar. Adem ́as
+encuentre un intervalo de confianza del 95 % y otro del 99 % para μ. Concluya
+```{r}
+
+x <- rpois(500000, 20)
+
+Samp <- sample(x, 1000)
+SampMean <- mean(Samp)
+SampSd <- sd(Samp)
+
+#Calcular el intervalo de confianza del 95%
+Interv95 <- 0.05
+z <- qnorm(1 - Interv95 / 2)
+MargenError <- z * (SampSd / sqrt(1000))
+ConfIntervM <- (SampMean - MargenError)
+ConfIntervMp <- (SampMean + MargenError)
+ConfIntervM
+ConfIntervMp
+
+
+# Calcular el intervalo de confianza del 99%
+Interv99 <- 0.01
+y <- qnorm(1 - Interv99 / 2)
+MargenError2 <- y * (SampSd / sqrt(1000))
+ConfIntervM1 <- (SampMean - MargenError2)
+ConfIntervMp1 <- (SampMean + MargenError2)
+ConfIntervM1
+ConfIntervMp1
+
+
+
+
+
+```
+
+#Problema 5
+Problema 5. Cargue el dataset mtcars, conjunto de datos incorporado en R.
+1. Realice un resumen y descripci ́on de los atributos.
+2. Usar algunos gr ́aficos para visualizar la distribuci ́on de los valores de la variable mpg. Concluir
+3. Calcular el intervalo de confianza con una probabilidad del 95 % para la media de mpg con la distribuci ́on
+t-student. Concluir
+```{r}
+data(mtcars)
+
+hist(mtcars$mpg)
+boxplot(mtcars$mpg)
+plot(mtcars$mpg)
+MeanCar <- mean(mtcars$mpg)
+SdCar <- sd(mtcars$mpg)
+n <- length(mtcars$mpg)
+Confinter <- 0.05
+t <- qt(1 - Confinter/2, df = n - 1)
+MargenError <- t * (SdCar / sqrt(n))
+confiM<- (MeanCar - MargenError)
+confiMe <- (MeanCar + MargenError)
+confiM
+confiMe
+
+
+
+```
+
+#Problema 6
+Problema 6. El rector de una universidad quiere usar la media de una muestra aleatoria para estimar la
+cantidad promedio de tiempo que tardan los estudiantes en ir de una clase a la siguiente, y quiere ser capaz
+de afirmar con 99 % de confianza que el error es cuando mucho de 0.25 minutos. Si se puede suponer por
+experiencia que σ = 1,40 minutos, ¿cu ́an grande debe ser la muestra que se tome?
+α = 1 − 0,99, Z0,005 ≈ 2,57
+σ = 1,40
+E = 0,25
+```{r}
+MaxErrorMarg <- 0.25
+Z <- qnorm(1 - 0.01 / 2)
+n <- (Z * 1.40 / MaxErrorMarg)^2
+n
+cat("Redondeado:",round(n))
+```
+
+#Problema 7
+Suponga que un fabricante afirma que la vida media de una bombilla es mayor a 10,000 horas.
+En una muestra de 30 bombillas, se encontŕo que solo duran en promedio 9,900 horas. Suponga que la
+desviacíon est ́andar de la poblaci ́on es de 120 horas. ¿podemos rechazar la afirmacíon del fabricante?
+```{r}
+media <- 10000
+media_muestra <- 9900
+sd <- 120
+n <- 30
+
+valor_Z <- (media_muestra - media) / (sd / sqrt(n))
+
+alpha <- 0.05
+
+critico_Z <- qnorm(1 - alpha)
+
+cat("\nValor calculado de Z:", valor_Z)
+cat("\nValor critico de Z:", critico_Z)
+cat("\n")
+
+if (valor_Z < critico_Z) {
+  cat("Rechazamos")
+} else {
+  cat("No rechazamos")
+}
+
+
+```
+Conclusión:
+Rechazamos la hipótesis nula, deibido a que el valor calculado de Z es -4.564355, y el valor crítico de Z es -1.645. Como -4.564 < -1.645. Esto significa que hay evidencia suficiente para afirmar que la vida media de las bombillas es menor a 10,000 horas, y por lo tanto, rechazamos la afirmación del fabricante.
+
+
+#Problema 8
+Suponga que la etiqueta de una bolsa de galletas indica que hay como maximo 2 gramos de grasa saturada en una sola galleta. En una muestra de 35 galletas, se encuentra que la cantidad media de grasa saturada por galleta es de 2,1 gramos. Suponga que la desviacíon eśtandar de la muestra es 0.3 gramos.
+¿podemos rechazar la afirmacíon en la etiqueta de los alimentos?
+```{r}
+n<-35
+S<-0.3
+media2<-2.1
+
+t <- (media2-2)/(S/sqrt(n))
+t
+
+# Valor crítico de t para un nivel de significancia de 0.05 y grados de libertad (n - 1)
+alpha1 <- 0.02
+
+pnorm(t)
+
+if (pnorm(t) > alpha1) {
+  cat("Rechazamos")
+} else {
+  cat("No podemos rechazar")
+}
+
+
+```
+Conclusión:
+Rechazamos la hipótesis nula, debido a que hay evidencia para afirmar con un alto grado de confianza que la afirmación en la etiqueta de los alimentos no es válida debido a que la cantidad media de grasa saturada por galleta es mayor de 2 gramos.
+
+#Problema 9
+¿Cúal es el tama ̃no de la menor muestra requerida para estimar una proporci ́on desconocida
+de clientes quienes pagar ́ıan por un servicio adicional hasta dentro de un error m ́aximo de 0.06 con al menos
+95 % de confianza? ¿Cúal ser ́a el tama ̃no de muestra requerido si la proporci ́on a estimar es al menos de 0.8?
+
+```{r}
+# Nivel de confianza (1 - alpha)
+n_confianza <- 0.95
+E_estimacion <- 0.06
+p_estimado <- 0.8
+
+# Valor crítico Z para el nivel de confianza
+Z <- qnorm(1 - (1 - n_confianza) / 2)
+
+# Calcular el tamaño de la muestra
+t_muestra <- (Z^2 * p_estimado * (1 - p_estimado) /E_estimacion^2)
+
+t_muestra
+
+```
+
+
+
+
+#Problema 10
+Una aerol ́ınea afirma que tan solo 6 % de todo el equipaje nunca se encuentra. Si, en una
+muestra aleatoria, 17 de 200 piezas de equipaje perdido no se encuentran, pruebe la hip ́otesis nula p = 0,06
+contra la hip ́otesis alternativa p > 0,06, con un nivel de significancia de 0.05.
+```{r}
+Pbarra<-0.085
+Po <- 0.06
+n_10<-200
+z_cal <- (Pbarra - Po) / sqrt((Po * (1 - Po)) / n_10)
+z_cal
+
+# Valor crítico para un nivel de significancia de 0.05 (cola derecha)
+alpha <- 0.05
+valor_critico<- qnorm(1 - alpha)
+
+valor_critico
+
+if (z_cal > valor_critico) {
+  cat("Rechazamos la hipótesis nula. Hay evidencia para afirmar que la proporción de equipaje no encontrado es mayor que 0.06.")
+} else {
+  cat("No podemos rechazar la hipótesis nula. No hay suficiente evidencia para afirmar que la proporción de equipaje no encontrado es mayor que 0.06.")
+}
+
+
+```
+
