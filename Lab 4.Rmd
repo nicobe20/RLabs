@@ -1,0 +1,170 @@
+---
+title: "R Notebook"
+output: html_notebook
+author: "Isabela Rivera Aristizábal, Mariana Parra Díaz, David Fonseca Lara, Nicolas Betancur Ochoa"
+---
+
+#Bloque 1
+
+Punto A
+
+```{r}
+
+Dat <- read.csv("C:/Users/Mariana/Downloads/ventaypub.csv")
+
+```
+
+
+Punto B
+```{r}
+
+plot(Dat$Publicidad,Dat$Ventas)
+abline(mod)
+
+```
+
+Punto C
+
+```{r}
+
+media1 <- mean(Dat$Publicidad)
+media2 <- mean(Dat$Ventas)
+beta1 <- coef(mod[1])
+beta2 <- coef(mod[2])
+sum1 <- sum((Dat$Publicidad)-media1)
+sum2 <- sum((Dat$Ventas)-media2)
+
+b1 <-  -(sum1*sum2)/(sum1)**2
+
+b1
+
+b2 <- media2-(b1*media1)
+b2
+
+
+#DUDOSOoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+```
+
+
+
+Punto D
+
+```{r}
+Formula <- (Ventas ~ Publicidad)
+mod = lm(formula = Ventas ~ Publicidad ,Dat)
+summary(mod)
+
+```
+
+
+Punto E
+```{r}
+
+```
+
+Punto F
+```{r}
+s2<-summary(mod)$sigma
+s2
+```
+
+Punto G
+```{r}
+
+cor(Dat$Publicidad,Dat$Ventas)^2
+
+```
+
+Punto H
+```{r}
+#Una estimacion para ventas promedio verdadera a un nivel de 22 mill en publicidad es B^0 + B^1,(22)
+
+predict(mod,newdata = data.frame(Publicidad=22),interval = "prediction")
+```
+
+
+Punto I
+```{r}
+
+```
+
+
+
+#Bloque 2
+```{r}
+#Punto a
+#Hablar de la Ho
+
+```
+
+
+```{r}
+#Punto b
+plot(mod, which = 1:3)
+#Se observa un comportamiento aleatorio, no es un tan marcado,entonces no se violan los supuestos. Al percer no hay una violacion fuerte de estos supuestos y no hay prueba suficiente para rechazarlos, nos gustaria recolectar mas datos para poder para observar mejor el comportamiento
+
+#BUSCAR COMO APLICAR LO DE SHAPIRO WILK - Es la prueba de hipotesis que nos piden en el punto de normalidad
+#El primer grafico tiene que ver con linealidad, el segundo con normalidad y el tercero con homocedasticidad
+
+
+#Se puede verificar la homocedasticidad porque la linea es muy horizontal
+#Buscar PRUEBA DE LEVENE
+
+#Omitir en el punto b la parte de intervalo de confianza porque lo vuelven a pedir despues, entonces para no repetir
+```
+
+
+```{r}
+#Punto c
+#FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+# Prueba de significancia F
+anova(mod)
+
+# Pruebas t para cada coeficiente
+summary(mod)
+```
+
+
+```{r}
+#Punto d - matriz varianza - covarianza
+mvc<-vcov(mod)
+mvc
+```
+
+
+```{r}
+#Punto e
+sqrt(diag(mvc))
+```
+
+
+```{r}
+#Punto f
+#Decir si se rechazan o no las hipotesis einterpretar los resultados
+```
+
+
+```{r}
+#Punto g - intervalo de confianza
+confint(mod, level = 0.95)
+confint(mod, level = 0.99)
+#Hay que interpretar
+```
+#Interpretación
+
+
+
+```{r}
+#Punto h
+predict(mod,newdata = data.frame(Publicidad=7.5),interval = "confidence")
+#Interpretar
+```
+#Interpretación
+
+
+```{r}
+#Punto i
+predict(mod,newdata = data.frame(Publicidad=11),interval = "prediction")
+#Interpretar
+```
+#Interpretación
