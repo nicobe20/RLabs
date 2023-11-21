@@ -1,0 +1,217 @@
+---
+title: "R Notebook"
+output: html_notebook
+author: "Isabela Rivera Aristizábal, Mariana Parra Díaz, David Fonseca Lara, Nicolas Betancur Ochoa"
+---
+
+#Bloque 1
+
+#1.
+```{r}
+
+Dat <- read.csv("C:/Users/Usuario/OneDrive/Escritorio/ventaypub.csv")
+Publicidad <- Dat$Publicidad
+Ventas <- Dat$Ventas
+```
+
+#2.
+```{r}
+# Gráfico de dispersión
+plot(Dat$Publicidad,Dat$Ventas)
+
+  
+ggplot(Dat, aes(x=Publicidad, y=Ventas, add="reg.line"))+geom_point()+
+geom_smooth(method=lm, se=TRUE)+
+  labs(title = "Publicidad vs Ventas",
+       x = "Costos de Publicidad",
+       y = "Ventas")
+
+
+#Usando la libreria (ggplot2) y hacemos el diagrama de dispersion con geom_point hacemos los puntos y con geom_smooth hacemos la linea de regresion ya con labs le damos las marcas a nuestro grafico.
+```
+Conclusión: En el gráfico podemos ver que hay una relación entre ambas variables, a mayor valor de publicidad entonces mayor valor de ventas. Podemos observar una tendencia de recta positiva de los puntos.
+Podemos ver que los puntos se dispersan un poco, por lo que la relación entre las variables puede que no sea tan fuerte.
+
+
+#3.
+```{r}
+
+#Método de minimos cuadrados para beta0 y beta1
+
+media1 <- mean(Dat$Publicidad)
+media2 <- mean(Dat$Ventas)
+
+#Uso de la fórmula para B1
+
+beta1 <- sum((Dat$Publicidad - media1) * (Dat$Ventas - media2)) / sum((Dat$Publicidad - media1)^2)
+
+beta1
+
+#Uso de la fórmula para B2
+
+beta0 <- media2 - beta1 * media1
+
+beta0
+
+venta_adicional <- beta1 
+
+
+cor(Dat$Publicidad,Dat$Ventas)
+
+```
+El valor de la correlación es menor a 0,5, por lo que se puede concluir que la fuerza entre las dos variables no es tan fuerte. 
+El valor de la pendiente es de 0,201 y el valor del intercepto es de 6,066.
+
+#4.
+```{r}
+#Uso de la función lm de R.
+Formula <- (Ventas ~ Publicidad)
+mod = lm(Ventas ~ Publicidad ,Dat)
+summary(mod)
+
+```
+
+#5.
+La fórmula del modelo de regresión lineal simple es Y=beta0 + beta1*(X) + E.
+Al usar la regresión para estimar los valores de beta0 y beta1 con el método de mínimos cuadrados y con la función lm de R podemos ver que da el mismo resultado (6.066111 y 0.2017527). Podemos concluir que para encontrar estos valores es posible recurrir a la fórmula o a la función lm, sin embargo, esta última podría ser más rapida, precisa y sencilla de usar.
+
+
+#6.
+```{r}
+#Varianza
+s2<-summary(mod)$sigma**2
+s2
+```
+Este valor resultante es un valor de magnitud grande, por lo que la nube de puntos está má alejada de la recta. Podemos concluir que hay poca dependencia entre las variables, asi como vimos con la correlación.
+
+
+#7.
+```{r}
+#Coeficientes de determinación
+
+cor(Dat$Publicidad,Dat$Ventas)^2
+
+
+```
+Este valor lo sacamos anteriormente con la función lm = Multiple R-squared:  0.1213
+El coeficiente de determinación ajustado lo extraemos de la misma, y es = Adjusted R-squared:  0.09877
+
+el modelo explica el 98,77% de la variabilidad total de las ventas. 
+
+
+#8.
+Podemos decir que el modelo líneal NO es sólido, ya que el valor del coeficiente de correlación indica un valor que se encuentra debajo del 0,5, por lo que es una relación débil.
+
+
+#9.
+```{r}
+#Una estimacion para ventas promedio verdadera a un nivel de 22 mill en publicidad es B^0 + B^1,(22)
+
+predict(mod,newdata = data.frame(Publicidad=22),interval = "prediction")
+```
+
+
+
+
+#Bloque 2
+
+#1.
+```{r}
+#Desviación estándar
+s1<-summary(mod)$sigma
+s1
+
+#si se logra rechazar beta 1, coeficiente de correlacion
+
+
+```
+Veamos que el resultado obtenido de desviacion estandar es pequeño el resultado fue 2.72 esto sugiere un buen ajuste del modelo de datos. 
+Asi mismo veamos que Ho: con esa información todavía no se puede rechazar o no la hipótesis nula porque hay que tener en cuenta otros parametros como el nivel de significancia para evaluar b1 
+
+#2.
+```{r}
+plot(mod, which = 1:3)
+#Se observa un comportamiento aleatorio, no es un tan marcado,entonces no se violan los supuestos. Al parecer no hay una violacion fuerte de estos supuestos y no hay prueba suficiente para rechazarlos, nos gustaria recolectar mas datos para poder para observar mejor el comportamiento
+
+
+
+
+#Se puede verificar la homocedasticidad porque la linea es muy horizontal
+#Buscar PRUEBA DE LEVENE
+
+#Omitir en el punto b la parte de intervalo de confianza porque lo vuelven a pedir despues, entonces para no repetir
+```
+El primer gráfico es el de linealidad. En este caso se observa que los datos tienen un comportamiento aleatorio y que se ubican cerca a la línea, debido a esto se puede afirmar que hay linealidad.
+
+El segundo gráfico que es el de normalidad lo podemos interpretar con la prueba de Shapiro Wilk ya que la muestra es de menos de 50 datos (es pequeña). En esta gráfica se observa que los datos son muy cercanos a la línea de distribución ajustada, por eso se puede concluir que los datos si siguen una distribución normal.
+
+El tercer gráfico es de homocedasticidad, y se puede verificar la homocedasticidad porque la linea es muy horizontal y los puntos en el gráfico estan distribuidos aleatoriamente alrededor de dicha línea.
+
+
+#3.
+```{r}
+# Prueba de significancia F
+anova(mod)
+
+# Pruebas t para cada coeficiente
+summary(mod)
+```
+
+El estadistico de prueba para t es de 5,927 para un coeficiente y 2,30 para el otro.
+El estadistico de prueba para la f es 5,3836.
+
+El valor-p asociado del modelo es igual a 0.02565. Este es un valor bajo, (menor a un nivel de significancia de 0,5) por lo que podemos decir que el modelo es estadísticamente significativo.
+
+
+#4.
+```{r}
+#matriz varianza - covarianza
+mvc<-vcov(mod)
+mvc
+```
+
+#5.
+```{r}
+#Error estándar
+sqrt(diag(mvc))
+```
+Coinciden con los valores encontrados con la función lm.
+
+#6.
+```{r}
+beta0 
+beta1
+
+
+#Decir si se rechazan o no las hipotesis einterpretar los resultados
+```
+los coeficientes son estadisticamente significativos. b0 es diferente de 0 el intercepto es significativamente diferente de 0 es decir el punto donde la linea de regresion corta el eje vertical es significativamente distinto de 0.
+b1 es diferente de 0 esto indica que la pendiente es siginificativamente diferente de cero.
+
+#7.
+```{r}
+#intervalo de confianza para b0 y b1
+confint(mod, level = 0.95)
+confint(mod, level = 0.99)
+
+```
+#Interpretación
+Cuando se tienen dos intervalos de confianza, uno con un nivel del 95% y otro con un nivel del 99%, la principal diferencia es la certeza asociada a cada uno. El intervalo del 95% es más estrecho, ofreciendo mayor precisión pero menos cobertura probabilística (95%), dejando por fuera datos de la muestra donde puede estar el verdadero valor del parámetro poblacional. Mientras que el intervalo del 99% es más amplio, proporcionando mayor seguridad en la cobertura (99%) pero puede tener menos precisión. 
+
+#8.
+```{r}
+#intervalo de confianza para ventas promedio cuando los gastos en publicidad son de 7.5 millones de pesos
+
+predict(mod,newdata = data.frame(Publicidad=7.5),interval = "confidence")
+
+```
+Se estima que las ventas promedio tendran un valor aproximado de 7,6 cuando los gastos en publicidad son de 7.5 millones de pesos. Además, con un intervalo de confianza del 95%, esperamos que el valor verdadero caiga entre un límite inferior de 6.55 y un límite superior de 8.61.
+
+#9.
+```{r}
+#intervalo de confianza para las ventas cuando los gastos en publicidad son de 11 millones de pesos.
+
+predict(mod,newdata = data.frame(Publicidad=11),interval = "prediction")
+
+```
+Se estima que las ventas tendran un valor aproximado de 8,3 cuando los gastos en publicidad son de 11 millones de pesos. Además, con un intervalo de confianza del 95%, esperamos que el valor verdadero caiga entre un límite inferior de 2,711 y un límite superior de 13.86.
